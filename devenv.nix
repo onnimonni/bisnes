@@ -38,7 +38,7 @@
     ];
     env = {
       CONSULT_LLM_DEFAULT_MODEL = "gemini-3-pro-preview";
-      CONSULT_LLM_ALLOWED_MODELS = "gemini-3-pro-preview,gemini-2.5-pro";
+      CONSULT_LLM_ALLOWED_MODELS = "gemini-3-pro-preview";
     };
   };
 
@@ -61,13 +61,13 @@
           "sudo:*"
 
           # Do not run stuff with npx or nodejs
-          "npx"
-          "npm"
-          "node"
+          "npx:*"
+          "npm:*"
+          "node:*"
 
           # Do not create stuff with python
-          "pip"
-          "python"
+          "pip:*"
+          "python:*"
         ];
       };
     };

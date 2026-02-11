@@ -3,261 +3,313 @@ import pptxgen from 'pptxgenjs';
 const pptx = new pptxgen();
 pptx.layout = 'LAYOUT_WIDE';
 
-const BG = '1a1a2e';
-const ACCENT = '00d4ff';
-const TEXT = 'e0e0e0';
-const PINK = 'ff6b9d';
-const PURPLE = 'c44dff';
-const DARK_CARD = '16213e';
+const BG = 'fafaf8';
+const ACCENT = '1b5e20';
+const TEXT = '212121';
+const MUTED = '757575';
+const DULL = 'c8c8c8';
+const PINK = 'c62828';
+const PURPLE = '2e7d32';
+const DARK_CARD = 'e8f5e9';
+const GREEN = '00c853';
 
 function addSlideBase(opts = {}) {
   const slide = pptx.addSlide();
   slide.background = { color: BG };
   if (opts.title) {
     slide.addText(opts.title, {
-      x: 0.5, y: 0.3, w: 12, h: 0.8,
-      fontSize: 28, bold: true, color: ACCENT,
+      x: 0.8, y: 0.4, w: 11.5, h: 1,
+      fontSize: 36, bold: true, color: ACCENT,
     });
   }
   return slide;
 }
 
-function bullets(items) {
+function bullets(items, fontSize = 24) {
   return items.map(text => ({
     text,
-    options: { bullet: true, color: TEXT, fontSize: 18, breakLine: true },
+    options: { bullet: true, color: TEXT, fontSize, breakLine: true, lineSpacingMultiple: 1.4 },
   }));
 }
 
-// --- Slide 1: Title ---
+// ============================================================
+// Slide 1: Title — Big, bold, anchored
+// ============================================================
 const s1 = addSlideBase();
 s1.addText('bisnes', {
-  x: 1, y: 1.5, w: 11, h: 1.5,
-  fontSize: 52, bold: true, color: ACCENT, align: 'center',
-  fontFace: 'Arial',
+  x: 0, y: 1.2, w: '100%', h: 2,
+  fontSize: 120, bold: true, color: ACCENT, align: 'center',
+  charSpacing: -2,
 });
-s1.addText('The AI-native starter template\nfor building billion dollar businesses', {
-  x: 1, y: 3.2, w: 11, h: 1.5,
-  fontSize: 24, color: TEXT, align: 'center',
+s1.addText('The new standard for AI-native\ndeveloper environments', {
+  x: 2, y: 3.4, w: 9, h: 1.5,
+  fontSize: 32, color: MUTED, align: 'center',
+  lineSpacingMultiple: 1.3,
 });
-s1.addText('One file. Fully reproducible. AI-first.', {
-  x: 1, y: 5, w: 11, h: 0.6,
-  fontSize: 16, color: PURPLE, align: 'center', italic: true,
+s1.addText('$ devenv shell  # everything installs', {
+  x: 3, y: 5.2, w: 7, h: 0.7,
+  fontSize: 20, color: GREEN, align: 'center',
+  fontFace: 'Courier New',
 });
 
-// --- Slide 2: The Problem ---
-const s2 = addSlideBase({ title: 'The Problem' });
+// ============================================================
+// Slide 2: The Problem — fewer words, bigger impact
+// ============================================================
+const s2 = addSlideBase({ title: 'Setup Is the Bottleneck' });
+
 s2.addText(bullets([
-  'Founders waste weeks on setup',
-  'Docker + Makefile + CI = config sprawl',
-  '"Works on my machine" kills teams',
-  'AI agents can\'t navigate messy configs',
-  'Onboarding new devs takes days',
-]), { x: 0.8, y: 1.5, w: 8, h: 4, valign: 'top' });
+  'Config sprawl: Docker + Makefile + CI + .env',
+  '"Works on my machine" kills velocity',
+  'AI agents choke on scattered configs',
+  'New dev onboarding: days, not minutes',
+], 26), { x: 1, y: 2.0, w: 7.5, h: 4.5, valign: 'middle' });
 
 s2.addShape(pptx.ShapeType.roundRect, {
-  x: 9, y: 1.8, w: 3.5, h: 3.5,
-  fill: { color: DARK_CARD },
-  rectRadius: 0.2,
+  x: 9, y: 2.5, w: 3.5, h: 3.2,
+  fill: { color: DARK_CARD }, rectRadius: 0.15,
 });
-s2.addText('Avg setup time\nfor new projects', {
-  x: 9.2, y: 2, w: 3.1, h: 1, fontSize: 14, color: TEXT, align: 'center',
+s2.addText('2\u20135 DAYS', {
+  x: 9, y: 2.8, w: 3.5, h: 1.5,
+  fontSize: 56, bold: true, color: PINK, align: 'center',
 });
-s2.addText('2-5 days', {
-  x: 9.2, y: 3, w: 3.1, h: 1.2,
-  fontSize: 36, bold: true, color: PINK, align: 'center',
-});
-s2.addText('wasted before writing\nany business logic', {
-  x: 9.2, y: 4.2, w: 3.1, h: 0.8, fontSize: 12, color: TEXT, align: 'center',
+s2.addText('wasted before writing\na single line of business logic', {
+  x: 9.1, y: 4.3, w: 3.3, h: 1,
+  fontSize: 16, color: MUTED, align: 'center',
 });
 
-// --- Slide 3: The Solution ---
-const s3 = addSlideBase({ title: 'The Solution: devenv.nix' });
-s3.addText('Everything declared in one file', {
-  x: 0.5, y: 1.3, w: 12, h: 0.6, fontSize: 18, color: PURPLE, italic: true,
+// ============================================================
+// Slide 3: Before / After — show, don't tell
+// ============================================================
+const s3 = addSlideBase({ title: 'Before & After' });
+
+// Left: Before
+s3.addShape(pptx.ShapeType.roundRect, {
+  x: 0.5, y: 1.6, w: 5.8, h: 5,
+  fill: { color: DARK_CARD }, rectRadius: 0.15,
+});
+s3.addText('\u274C Traditional Setup', {
+  x: 0.8, y: 1.8, w: 5.2, h: 0.7,
+  fontSize: 26, bold: true, color: PINK,
+});
+s3.addText(
+  'Dockerfile\ndocker-compose.yml\nMakefile\n.env.example\n.github/workflows/ci.yml\npackage.json\n.eslintrc.js\n.prettierrc\ntsconfig.json\nJestfile',
+  {
+    x: 1, y: 2.6, w: 5, h: 3.8,
+    fontSize: 18, color: MUTED, fontFace: 'Courier New',
+    lineSpacingMultiple: 1.35,
+  },
+);
+
+// Right: After
+s3.addShape(pptx.ShapeType.roundRect, {
+  x: 6.8, y: 1.6, w: 5.8, h: 5,
+  fill: { color: DARK_CARD }, rectRadius: 0.15,
+  line: { color: ACCENT, width: 2 },
+});
+s3.addText('\u2705 bisnes', {
+  x: 7.1, y: 1.8, w: 5.2, h: 0.7,
+  fontSize: 26, bold: true, color: ACCENT,
+});
+s3.addText('devenv.nix', {
+  x: 7.3, y: 3.6, w: 5, h: 1,
+  fontSize: 36, bold: true, color: TEXT, fontFace: 'Courier New',
+});
+s3.addText('One file. Every language, service,\ntool, and AI agent.', {
+  x: 7.3, y: 4.7, w: 5, h: 1,
+  fontSize: 20, color: MUTED,
+  lineSpacingMultiple: 1.3,
 });
 
-const boxes = [
-  { label: 'Languages', desc: 'Elixir, JS, Rust...', icon: '{ }' },
-  { label: 'Services', desc: 'Postgres, Redis...', icon: '◆' },
-  { label: 'Tools', desc: 'Git hooks, linters', icon: '⚙' },
-  { label: 'AI Agents', desc: 'MCP servers, perms', icon: '◉' },
+// ============================================================
+// Slide 4: Why AI-Native — reframed with visual weight
+// ============================================================
+const s4 = addSlideBase({ title: 'Built for AI Agent Collaboration' });
+
+// Left column — faded "legacy" card
+s4.addShape(pptx.ShapeType.roundRect, {
+  x: 0.5, y: 1.6, w: 5.8, h: 4.8,
+  fill: { color: 'fbe9e7' }, rectRadius: 0.15,
+  line: { color: 'e57373', width: 1.5 },
+});
+s4.addText('Legacy Stack', {
+  x: 0.8, y: 1.8, w: 5.2, h: 0.7,
+  fontSize: 28, bold: true, color: PINK, align: 'center',
+});
+s4.addText('\u274C Agent Unfriendly', {
+  x: 0.8, y: 2.6, w: 5.2, h: 0.6,
+  fontSize: 22, color: MUTED, align: 'center', italic: true,
+});
+s4.addText(bullets([
+  'Scattered config files',
+  'Implicit "magic" scripts',
+  'Agents break things',
+], 22), { x: 1, y: 3.4, w: 5, h: 2.8 });
+
+// Right column
+s4.addShape(pptx.ShapeType.roundRect, {
+  x: 6.8, y: 1.6, w: 5.8, h: 4.8,
+  fill: { color: DARK_CARD }, rectRadius: 0.15,
+  line: { color: ACCENT, width: 2 },
+});
+s4.addText('bisnes', {
+  x: 7.1, y: 1.8, w: 5.2, h: 0.7,
+  fontSize: 28, bold: true, color: ACCENT, align: 'center',
+});
+s4.addText('\u2705 Agent Friendly', {
+  x: 7.1, y: 2.6, w: 5.2, h: 0.6,
+  fontSize: 22, color: MUTED, align: 'center', italic: true,
+});
+s4.addText(bullets([
+  'Single declarative file',
+  'Explicit & reproducible',
+  'Agents read & modify safely',
+], 22), { x: 7.3, y: 3.4, w: 5, h: 2.8 });
+
+// ============================================================
+// Slide 5: Why Now — the missing "secret sauce" slide
+// ============================================================
+const s5 = addSlideBase({ title: 'Why Now?' });
+
+const reasonRows = [
+  [
+    { text: '92%', options: { fontSize: 64, bold: true, color: ACCENT, align: 'right', fill: { color: BG } } },
+    { text: [
+      { text: 'of devs now use AI coding assistants', options: { fontSize: 26, color: TEXT, breakLine: true } },
+      { text: 'GitHub Survey 2025', options: { fontSize: 16, color: MUTED, italic: true } },
+    ], options: { fill: { color: BG } } },
+  ],
+  [
+    { text: '10x', options: { fontSize: 64, bold: true, color: PINK, align: 'right', fill: { color: BG } } },
+    { text: [
+      { text: 'more config files per repo vs 2015', options: { fontSize: 26, color: TEXT, breakLine: true } },
+      { text: 'DevOps Research', options: { fontSize: 16, color: MUTED, italic: true } },
+    ], options: { fill: { color: BG } } },
+  ],
+  [
+    { text: '0', options: { fontSize: 64, bold: true, color: PURPLE, align: 'right', fill: { color: BG } } },
+    { text: [
+      { text: 'tools that unify env + AI agent config', options: { fontSize: 26, color: TEXT, breakLine: true } },
+      { text: 'We checked', options: { fontSize: 16, color: MUTED, italic: true } },
+    ], options: { fill: { color: BG } } },
+  ],
 ];
 
-boxes.forEach((box, i) => {
-  const xPos = 0.5 + i * 3.1;
-  s3.addShape(pptx.ShapeType.roundRect, {
-    x: xPos, y: 2.2, w: 2.8, h: 3.5,
-    fill: { color: DARK_CARD }, rectRadius: 0.2,
-    line: { color: ACCENT, width: 1 },
-  });
-  s3.addText(box.icon, {
-    x: xPos, y: 2.4, w: 2.8, h: 0.8,
-    fontSize: 28, color: ACCENT, align: 'center',
-  });
-  s3.addText(box.label, {
-    x: xPos, y: 3.3, w: 2.8, h: 0.6,
-    fontSize: 20, bold: true, color: TEXT, align: 'center',
-  });
-  s3.addText(box.desc, {
-    x: xPos, y: 4, w: 2.8, h: 0.6,
-    fontSize: 14, color: TEXT, align: 'center',
-  });
+s5.addTable(reasonRows, {
+  x: 0.8, y: 1.8, w: 11.5, colW: [3.5, 8],
+  rowH: [1.7, 1.7, 1.7],
+  border: { pt: 0 },
+  valign: 'middle',
 });
 
-// --- Slide 4: Why AI-Native ---
-const s4 = addSlideBase({ title: 'Why AI-Native Matters' });
-
-const comparison = [
-  [
-    { text: '', options: { fill: { color: DARK_CARD } } },
-    { text: 'Traditional', options: { bold: true, color: PINK, fill: { color: DARK_CARD }, align: 'center' } },
-    { text: 'bisnes', options: { bold: true, color: ACCENT, fill: { color: DARK_CARD }, align: 'center' } },
-  ],
-  [
-    { text: 'Config files', options: { color: TEXT, fill: { color: BG } } },
-    { text: '5-10 scattered', options: { color: TEXT, fill: { color: BG }, align: 'center' } },
-    { text: '1 (devenv.nix)', options: { color: TEXT, fill: { color: BG }, align: 'center' } },
-  ],
-  [
-    { text: 'AI can modify', options: { color: TEXT, fill: { color: DARK_CARD } } },
-    { text: 'Fragile', options: { color: PINK, fill: { color: DARK_CARD }, align: 'center' } },
-    { text: 'Reliable', options: { color: ACCENT, fill: { color: DARK_CARD }, align: 'center' } },
-  ],
-  [
-    { text: 'Reproducible', options: { color: TEXT, fill: { color: BG } } },
-    { text: 'Sometimes', options: { color: TEXT, fill: { color: BG }, align: 'center' } },
-    { text: 'Always', options: { color: ACCENT, fill: { color: BG }, align: 'center' } },
-  ],
-  [
-    { text: 'Add a service', options: { color: TEXT, fill: { color: DARK_CARD } } },
-    { text: 'Docker + config + env', options: { color: TEXT, fill: { color: DARK_CARD }, align: 'center' } },
-    { text: 'One line in Nix', options: { color: TEXT, fill: { color: DARK_CARD }, align: 'center' } },
-  ],
-  [
-    { text: 'Onboarding', options: { color: TEXT, fill: { color: BG } } },
-    { text: 'Days', options: { color: PINK, fill: { color: BG }, align: 'center' } },
-    { text: 'Minutes', options: { color: ACCENT, fill: { color: BG }, align: 'center' } },
-  ],
-];
-
-s4.addTable(comparison, {
-  x: 1, y: 1.5, w: 11, colW: [3, 4, 4],
-  fontSize: 16, color: TEXT,
-  border: { type: 'solid', pt: 1, color: '2a2a4a' },
-  rowH: [0.6, 0.6, 0.6, 0.6, 0.6, 0.6],
-});
-
-// --- Slide 5: What's Included ---
-const s5 = addSlideBase({ title: 'What\'s Included Out of the Box' });
+// ============================================================
+// Slide 6: What's Included — bigger text, cleaner table
+// ============================================================
+const s6 = addSlideBase({ title: 'Production-Ready Stack' });
 
 const features = [
-  ['Elixir', 'Production-ready BEAM stack'],
-  ['Node.js + npm', 'pptxgenjs, tooling, scripts'],
-  ['Playwright MCP', 'AI-driven browser automation'],
-  ['Consult LLM MCP', 'Gemini UX review built in'],
-  ['Claude Code', 'Permissions & hooks configured'],
-  ['Git hooks', 'Lint, test, secrets check'],
+  ['Elixir + Phoenix', 'Production backend on BEAM'],
+  ['Bun + Node.js', 'Fast runtime, tooling, scripts'],
+  ['AI Browser Agent', 'Playwright browser automation'],
+  ['AI UX Agent', 'Gemini for automated UX reviews'],
+  ['AI Coding Agent', 'Claude with configured permissions'],
+  ['Git Hooks', 'Lint, test, secret scanning'],
 ];
 
-features.forEach((row, i) => {
-  const yPos = 1.4 + i * 0.75;
-  const bgColor = i % 2 === 0 ? DARK_CARD : BG;
-  s5.addShape(pptx.ShapeType.roundRect, {
-    x: 0.5, y: yPos, w: 12, h: 0.65,
-    fill: { color: bgColor }, rectRadius: 0.1,
-  });
-  s5.addText(row[0], {
-    x: 0.8, y: yPos, w: 3, h: 0.65,
-    fontSize: 18, bold: true, color: ACCENT, valign: 'middle',
-  });
-  s5.addText(row[1], {
-    x: 4, y: yPos, w: 8, h: 0.65,
-    fontSize: 16, color: TEXT, valign: 'middle',
-  });
+const featureRows = features.map((row, i) => ([
+  { text: row[0], options: { bold: true, color: ACCENT, fill: { color: i % 2 === 0 ? DARK_CARD : BG } } },
+  { text: row[1], options: { color: TEXT, fill: { color: i % 2 === 0 ? DARK_CARD : BG } } },
+]));
+
+s6.addTable(featureRows, {
+  x: 0.8, y: 1.8, w: 11.5, colW: [4, 7.5],
+  rowH: features.map(() => 0.9),
+  border: { pt: 0 },
+  fontSize: 22, color: TEXT,
+  valign: 'middle',
 });
 
-// --- Slide 6: Developer Experience ---
-const s6 = addSlideBase({ title: 'Developer Experience' });
+// ============================================================
+// Slide 7: DX — horizontal bars + big contrast
+// ============================================================
+const s7 = addSlideBase({ title: 'Clone to First Commit' });
 
 const dxData = [
-  { name: 'Setup speed', labels: ['Traditional', 'bisnes'], values: [40, 2] },
+  { name: 'Hours', labels: ['Typical Project', 'bisnes'], values: [40, 0.5] },
 ];
 
-s6.addChart(pptx.ChartType.bar, dxData, {
-  x: 0.5, y: 1.5, w: 5.5, h: 4,
-  showTitle: true, title: 'Hours to first commit',
-  titleColor: TEXT, titleFontSize: 14,
-  showValue: true,
-  valueFontSize: 14, valueColor: TEXT,
-  chartColors: [PINK, ACCENT],
-  catAxisLabelColor: TEXT, catAxisLabelFontSize: 12,
-  valAxisLabelColor: TEXT, valAxisHidden: true,
-  plotBgrdColor: DARK_CARD,
+s7.addChart(pptx.ChartType.bar, dxData, {
+  x: 1.0, y: 2.0, w: 11, h: 3.8,
+  barDir: 'bar',
+  showValue: true, valueFontSize: 20, valueColor: TEXT,
+  chartColors: [DULL, GREEN],
+  catAxisLabelColor: TEXT, catAxisLabelFontSize: 18,
+  valAxisHidden: true,
+  plotBgrdColor: 'f0f4f0',
   showLegend: false,
 });
 
-s6.addText(bullets([
-  'devenv shell → ready to code',
-  'AI reads one file, understands all',
-  'No Docker, no Vagrant, no Nix flake',
-  'Works on Mac, Linux, WSL2',
-]), { x: 6.5, y: 1.5, w: 6, h: 4, valign: 'top' });
+s7.addText(
+  '80x faster from clone to first commit',
+  { x: 1, y: 6.0, w: 11, h: 0.8, fontSize: 24, color: PURPLE, align: 'center', bold: true },
+);
 
-// --- Slide 7: How It Works ---
-const s7 = addSlideBase({ title: 'How It Works' });
-s7.addText('Three commands to launch a business', {
-  x: 0.5, y: 1.3, w: 12, h: 0.6, fontSize: 18, color: PURPLE, italic: true,
-});
+// ============================================================
+// Slide 8: How It Works — 3 steps, bigger text
+// ============================================================
+const s8 = addSlideBase({ title: 'Get Started in 3 Commands' });
 
 const steps = [
-  { num: '1', cmd: 'git clone', desc: 'Clone the template' },
-  { num: '2', cmd: 'devenv shell', desc: 'Everything installs' },
-  { num: '3', cmd: 'code .', desc: 'Start building' },
+  { num: '1', cmd: '$ git clone ...', desc: 'Clone the repo' },
+  { num: '2', cmd: '$ devenv shell', desc: 'Everything installs' },
+  { num: '3', cmd: '$ claude --yolo', desc: 'Start building' },
 ];
 
 steps.forEach((step, i) => {
-  const xPos = 0.8 + i * 4;
-  s7.addShape(pptx.ShapeType.roundRect, {
-    x: xPos, y: 2.3, w: 3.5, h: 3,
-    fill: { color: DARK_CARD }, rectRadius: 0.2,
-    line: { color: ACCENT, width: 1 },
+  const xPos = 0.6 + i * 4.2;
+  s8.addShape(pptx.ShapeType.roundRect, {
+    x: xPos, y: 2.2, w: 3.6, h: 4.0,
+    fill: { color: DARK_CARD }, rectRadius: 0.15,
   });
-  s7.addText(step.num, {
-    x: xPos, y: 2.5, w: 3.5, h: 1,
-    fontSize: 36, bold: true, color: ACCENT, align: 'center',
+  s8.addText(step.num, {
+    x: xPos + 0.3, y: 2.5, w: 1, h: 0.9,
+    fontSize: 40, bold: true, color: ACCENT,
   });
-  s7.addText(step.cmd, {
-    x: xPos, y: 3.4, w: 3.5, h: 0.7,
-    fontSize: 20, bold: true, color: PINK, align: 'center',
+  s8.addText(step.cmd, {
+    x: xPos, y: 3.8, w: 3.6, h: 0.8,
+    fontSize: 22, color: PINK, align: 'center',
     fontFace: 'Courier New',
   });
-  s7.addText(step.desc, {
-    x: xPos, y: 4.2, w: 3.5, h: 0.6,
-    fontSize: 16, color: TEXT, align: 'center',
+  s8.addText(step.desc, {
+    x: xPos, y: 4.8, w: 3.6, h: 0.7,
+    fontSize: 20, color: TEXT, align: 'center',
   });
   if (i < steps.length - 1) {
-    s7.addText('→', {
-      x: xPos + 3.5, y: 3.2, w: 0.5, h: 0.8,
-      fontSize: 28, color: ACCENT, align: 'center', valign: 'middle',
+    s8.addText('\u2192', {
+      x: xPos + 3.6, y: 3.7, w: 0.6, h: 1,
+      fontSize: 44, color: ACCENT, align: 'center', valign: 'middle',
     });
   }
 });
 
-// --- Slide 8: Closing ---
-const s8 = addSlideBase();
-s8.addText('Stop configuring.\nStart building.', {
-  x: 1, y: 1.5, w: 11, h: 2,
-  fontSize: 44, bold: true, color: ACCENT, align: 'center',
+// ============================================================
+// Slide 9: Closing CTA — bold, clean
+// ============================================================
+const s9 = addSlideBase();
+s9.addText('Stop configuring.\nStart building.', {
+  x: 0, y: 1.5, w: '100%', h: 2.5,
+  fontSize: 64, bold: true, color: ACCENT, align: 'center',
+  lineSpacingMultiple: 1.2,
 });
-s8.addText('github.com/onnimonni/bisnes', {
-  x: 1, y: 3.8, w: 11, h: 0.8,
-  fontSize: 22, color: PINK, align: 'center',
+s9.addText('github.com/onnimonni/bisnes', {
+  x: 0, y: 4.2, w: '100%', h: 1,
+  fontSize: 34, color: PINK, align: 'center',
   fontFace: 'Courier New',
+  hyperlink: { url: 'https://github.com/onnimonni/bisnes', tooltip: 'Go to repository' },
 });
-s8.addText('Clone it. Ship it. Scale it.', {
-  x: 1, y: 5, w: 11, h: 0.6,
-  fontSize: 18, color: PURPLE, align: 'center', italic: true,
+s9.addText('$ devenv shell', {
+  x: 0, y: 5.5, w: '100%', h: 0.8,
+  fontSize: 24, color: GREEN, align: 'center',
+  fontFace: 'Courier New',
 });
 
 pptx.writeFile({ fileName: 'slides/bisnes-setup.pptx' });

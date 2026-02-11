@@ -7,6 +7,12 @@ devenv.local.yaml
 .claude/settings.json
 .mcp.json
 
+# MacOS
+.DS_Store
+
+# Playwright test results
+.playwright-mcp/*
+
 # direnv
 .direnv
 
