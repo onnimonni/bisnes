@@ -2,11 +2,15 @@
 
 Starter template for building billion dollar businesses.
 
+## Getting started
+1. Install devenv.sh and nix: https://devenv.sh/getting-started/
+2. Install homebrew: https://brew.sh/
+
 ## Why devenv.nix?
 
 Everything — languages, tools, services, git hooks, MCP servers, AI agent permissions — is declared in one file: `devenv.nix`.
 
-**Hard for humans.** Nix syntax is alien. The learning curve is steep. Most developers would rather write a Dockerfile and call it a day.
+**Hard for humans.** Nix syntax is alien. The learning curve is steep. Most developers would rather write a Dockerfile or use [mise](https://github.com/jdx/mise) and call it a day.
 
 **Great for AI.** That's the point. AI agents can read, modify, and extend `devenv.nix` reliably because:
 

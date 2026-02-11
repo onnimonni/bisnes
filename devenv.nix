@@ -1,7 +1,24 @@
 { pkgs, lib, ... }:
 
 {
+  # Use these languages instead
   languages.elixir.enable = true;
+  languages.rust.enable = true;
+
+  # bun because we need it for pptxgenjs
+  languages.javascript = {
+    enable = true;
+    bun = {
+      enable = true;
+      install.enable = true;
+    };
+  };
+
+  # Test automation with Playwright
+  packages = with pkgs; [
+    playwright-test
+    playwright-driver
+  ];
 
   # Browser automation for testing
   claude.code.mcpServers.playwright = {
@@ -42,8 +59,20 @@
         deny = [
           "rm -rf:*"
           "sudo:*"
+
+          # Do not run stuff with npx or nodejs
+          "npx"
+          "npm"
+          "node"
+
+          # Do not create stuff with python
+          "pip"
+          "python"
         ];
       };
     };
   };
+
+  # Do not substitute from cachix because it requires a user
+  cachix.enable = false;
 }

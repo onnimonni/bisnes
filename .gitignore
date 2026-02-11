@@ -3,8 +3,19 @@
 devenv.local.nix
 devenv.local.yaml
 
+# Generated claude settings from devenv
+.claude/settings.json
+.mcp.json
+
 # direnv
 .direnv
 
 # pre-commit
 .pre-commit-config.yaml
+
+# Node / Bun
+node_modules/
+bun.lock
+
+# Generated slides
+slides/*.pptx
